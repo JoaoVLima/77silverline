@@ -54,31 +54,31 @@ export default class Core {
         this.scene.add( new RectAreaLightHelper( rectLight2 ) );
         this.scene.add( new RectAreaLightHelper( rectLight3 ) );
 
-        // const ambient = new THREE.HemisphereLight( 0xffffff, 0x444444, 0.05 );
+        // const ambient = new THREE.HemisphereLight( 0xffffff, 0x444444, 0.01 );
         // lights.push(ambient)
-        //
-        // const loader = new THREE.TextureLoader().setPath( './' );
-        // const texture = loader.load('disturb.jpg');
-        // texture.minFilter = THREE.LinearFilter;
-        // texture.magFilter = THREE.LinearFilter;
-        // texture.encoding = THREE.sRGBEncoding;
-        //
-        //
-        // const spotLight = new THREE.SpotLight( 0xffffff, 5 );
-        // spotLight.position.set( 25, 50, 25 );
-        // spotLight.angle = Math.PI / 6;
-        // spotLight.penumbra = 1;
-        // spotLight.decay = 2;
-        // spotLight.distance = 100;
-        // spotLight.map = texture;
-        //
-        // spotLight.castShadow = true;
-        // spotLight.shadow.mapSize.width = 1024;
-        // spotLight.shadow.mapSize.height = 1024;
-        // spotLight.shadow.camera.near = 10;
-        // spotLight.shadow.camera.far = 200;
-        // spotLight.shadow.focus = 1;
-        // lights.push(spotLight)
+
+        const loader = new THREE.TextureLoader().setPath( './media/' );
+        const texture = loader.load('disturb.jpg');
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.encoding = THREE.sRGBEncoding;
+
+
+        const spotLight = new THREE.SpotLight( 0xffffff, 1 );
+        spotLight.position.set( 25, 50, 25 );
+        spotLight.angle = Math.PI / 6;
+        spotLight.penumbra = 1;
+        spotLight.decay = 2;
+        spotLight.distance = 100;
+        spotLight.map = texture;
+
+        spotLight.castShadow = true;
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+        spotLight.shadow.camera.near = 10;
+        spotLight.shadow.camera.far = 200;
+        spotLight.shadow.focus = 1;
+        lights.push(spotLight)
 
         // const spotLightHelper = new THREE.SpotLightHelper(spotLight);
         // this.scene.add(spotLightHelper)
@@ -92,7 +92,9 @@ export default class Core {
 
     /* 🖨️ Renderer */
     private initRenderer(): THREE.WebGLRenderer {
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById("ThreeCanvas") as HTMLCanvasElement
+        });
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.outputEncoding = THREE.sRGBEncoding;

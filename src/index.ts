@@ -1,7 +1,6 @@
 import Core from './core'
 import * as THREE from "three";
 import {PLYLoader} from "three/examples/jsm/loaders/PLYLoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 
 function init(){
     const core = new Core();
@@ -51,12 +50,10 @@ function init(){
     //     }
     // )
 
-    new PLYLoader().load( './Lucy100k.ply', function ( geometry ) {
+    new PLYLoader().load( './media/Lucy100k.ply', function ( geometry ) {
 
         geometry.scale( 0.006, 0.006, 0.006 );
         geometry.computeVertexNormals();
-
-        const material = new THREE.MeshLambertMaterial();
 
         const mesh = new THREE.Mesh( geometry, matKnot );
         mesh.position.y = 4.8;
