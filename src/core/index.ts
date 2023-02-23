@@ -4,11 +4,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+import {PLYLoader} from "three/examples/jsm/loaders/PLYLoader";
 
 export default class Core {
     public scene: THREE.Scene;
     public camera: THREE.PerspectiveCamera;
     public lights: THREE.Light[];
+    public objects: THREE.Mesh[];
     public renderer: THREE.WebGLRenderer;
     public controls: OrbitControls;
 
@@ -16,6 +18,7 @@ export default class Core {
         this.scene = this.initScene();
         this.camera = this.initCamera();
         this.lights = this.initLights();
+        this.objects = this.initObjects();
         this.renderer = this.initRenderer();
         this.controls = this.initControls();
     }
@@ -88,6 +91,45 @@ export default class Core {
         });
 
         return lights;
+    }
+
+    /* 🗿 Objects */
+    private initObjects(): THREE.Mesh[] {
+        let objects: THREE.Mesh[] = []
+
+        const geoFloor = new THREE.BoxGeometry( 2000, 0.1, 2000 );
+        const matStdFloor = new THREE.MeshStandardMaterial( { color: 0x808080, roughness: 0.1, metalness: 0 } );
+        const mshStdFloor = new THREE.Mesh( geoFloor, matStdFloor );
+        objects.push(mshStdFloor);
+
+        const geoKnot = new THREE.TorusKnotGeometry( 1.5, 0.5, 200, 16 );
+        const matKnot = new THREE.MeshStandardMaterial( { color: 0xffffff, roughness: 0, metalness: 0 } );
+        const meshKnot = new THREE.Mesh( geoKnot, matKnot );
+        meshKnot.name = 'Knot';
+        meshKnot.scale.set(0.5,0.5,0.5)
+        meshKnot.position.set( 0, 5, 0 );
+        objects.push(meshKnot);
+
+        new PLYLoader().load( './media/Lucy100k.ply', (geometry) => {
+
+            geometry.scale( 0.006, 0.006, 0.006 );
+            geometry.computeVertexNormals();
+
+            const mesh = new THREE.Mesh( geometry, matKnot );
+            mesh.position.y = 4.8;
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            mesh.name = 'Lucy';
+
+            this.scene.add(mesh);
+
+        } );
+
+        objects.forEach((object: THREE.Mesh) => {
+            this.scene.add(object)
+        });
+
+        return objects;
     }
 
     /* 🖨️ Renderer */
