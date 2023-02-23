@@ -1,2 +1,2 @@
 # 77silverline
-77silverline website, developed with three.js using typescript and webpack
+77silverline website, developed with three.js using typescript and vitejs
