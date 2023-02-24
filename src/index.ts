@@ -40,6 +40,7 @@ async function init(){
     let index = 0;
 
     const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
+    // @ts-ignore
     const texture = new THREE.TextureLoader().load(obj_events.events[index]['link_imagem']);
     const mat = mesh.material as THREE.MeshBasicMaterial;
     mat.map = texture;
@@ -50,6 +51,7 @@ async function init(){
 
         const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
 
+        // @ts-ignore
         const texture = new THREE.TextureLoader().load(obj_events.events[index]['link_imagem']);
 
         mesh.rotation.y += 0.02;
