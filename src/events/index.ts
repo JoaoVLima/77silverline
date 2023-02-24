@@ -1,6 +1,6 @@
 
 
-interface Event {
+type Event = {
     "id": string,
     "artist": string,
     "titulo": string,
@@ -13,9 +13,9 @@ interface Event {
 }
 
 export default class Events {
-    public events: Event[] | globalThis.Event[]; // Remover globalThis
+    public events: Event[]; // Remover globalThis
 
-    constructor(events: Event[] | globalThis.Event[]) {
+    constructor(events: Event[]) {
         this.events = events;
     }
 
