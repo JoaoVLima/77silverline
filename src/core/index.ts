@@ -26,7 +26,7 @@ export default class Core {
     /* 🎥 Camera */
     private initCamera(): THREE.PerspectiveCamera {
         const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.set(5, 0, 0);
+        camera.position.set(8, 0, 0);
         return camera;
     }
 
