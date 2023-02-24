@@ -30,6 +30,7 @@
         }
     },
     "scripts": {
+        "curljson": "curl https://opensheet.elk.sh/1t2vY9MrRtTWhDa77OgyPkejVWiue5h4Fb1c0OZy93M0/tabela -o \"events.json\"",
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",

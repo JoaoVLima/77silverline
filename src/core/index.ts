@@ -76,12 +76,8 @@ export default class Core {
         // create a plane geometry
         const geometry = new THREE.BoxGeometry( 2, 2,0.01);
 
-        // create a texture with two images
-        const texture = new THREE.TextureLoader().load('https://i1.sndcdn.com/artworks-Fac2UpSNEK67lp8v-FYenSw-t500x500.jpg');
-        const texture2 = new THREE.TextureLoader().load( 'https://i1.sndcdn.com/artworks-hg2UHUijwPJZOpkv-CSs1WQ-t500x500.jpg' );
-
         // create a material with the texture
-        const material = new THREE.MeshBasicMaterial({map: texture, lightMap: texture2});
+        const material = new THREE.MeshBasicMaterial();
 
         // create a mesh with the geometry and material
         const mesh = new THREE.Mesh(geometry, material);
