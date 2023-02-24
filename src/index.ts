@@ -20,12 +20,19 @@ function init(){
     window.addEventListener( 'resize', onWindowResize );
 
     let render = function () {
-        const time = performance.now() / 300;
+        // const time = performance.now() / 300;
 
-        const knot = scene.getObjectByName( 'Knot' ) as THREE.Mesh;
-        knot.rotation.y = time/4;
-        knot.position.x = Math.cos( time/8 ) * 4;
-        knot.position.z = Math.sin( time/8 ) * 4;
+        const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
+
+        mesh.rotation.y += 0.01;
+        if (mesh.rotation.y > Math.PI) {
+            mesh.rotation.y -= Math.PI;
+            const mat = mesh.material as THREE.MeshBasicMaterial;
+            const temp = mat.map as THREE.Texture;
+            mat.map = mat.lightMap;
+            mat.lightMap = temp;
+            mat.needsUpdate = true;
+        }
 
         renderer.render(scene, camera);
 
