@@ -20,11 +20,10 @@ function init(){
     window.addEventListener( 'resize', onWindowResize );
 
     let render = function () {
-        // const time = performance.now() / 300;
 
         const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
 
-        mesh.rotation.y += 0.01;
+        mesh.rotation.y += 0.02;
         if (mesh.rotation.y > Math.PI) {
             mesh.rotation.y -= Math.PI;
             const mat = mesh.material as THREE.MeshBasicMaterial;

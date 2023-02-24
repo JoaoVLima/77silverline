@@ -74,7 +74,7 @@ export default class Core {
         let objects: THREE.Mesh[] = []
 
         // create a plane geometry
-        const geometry = new THREE.BoxGeometry( 2, 2,0.1);
+        const geometry = new THREE.BoxGeometry( 2, 2,0.01);
 
         // create a texture with two images
         const texture = new THREE.TextureLoader().load('https://i1.sndcdn.com/artworks-Fac2UpSNEK67lp8v-FYenSw-t500x500.jpg');
