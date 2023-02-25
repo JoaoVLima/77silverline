@@ -4,7 +4,7 @@ import * as THREE from "three";
 // import {Pane} from 'tweakpane';
 // import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
 
-async function init(){
+async function init() {
     const core = new Core();
     const camera = core.camera
     const scene = core.scene
@@ -39,38 +39,26 @@ async function init(){
         .catch(error => console.error(error));
 
 
-    let onWindowResize = function() {
-
+    let onWindowResize = function () {
+        storeBounds();
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
 
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
 
-    window.addEventListener( 'resize', onWindowResize );
+    window.addEventListener('resize', onWindowResize);
 
-    // let onDocumentMouseMove = function (event:MouseEvent) {
-    //     console.log(event.clientX);
-    // }
-    // document.addEventListener( 'mousemove', onDocumentMouseMove );
     const container = document.getElementById("container") as HTMLDivElement;
 
-
-    let scrollPercent = ((container.scrollTop || container.scrollTop) /
-                        ((container.scrollHeight || container.scrollHeight) -
-                        container.clientHeight));
-    let index = Math.floor((scrollPercent*100)/obj_events.events.length);
-    console.log(Math.floor((scrollPercent*100)/obj_events.events.length));
-
-
-    let onDocumentMouseScroll = function() {
+    let onDocumentMouseScroll = function () {
         //calculate the current scroll progress as a percentage
-        scrollPercent = ((container.scrollTop || container.scrollTop) /
-                        ((container.scrollHeight || container.scrollHeight) -
-                        container.clientHeight));
-
-        const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
+        // scrollPercent = ((container.scrollTop || container.scrollTop) /
+        //                 ((container.scrollHeight || container.scrollHeight) -
+        //                 container.clientHeight));
+        detectCurrent();
+        const mesh = scene.getObjectByName('album') as THREE.Mesh;
         mesh.rotation.y = (container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI;
 
         // let newindex = Math.floor((scrollPercent*100)/obj_events.events.length);
@@ -86,56 +74,116 @@ async function init(){
         // }
 
 
-
     };
     container.onscroll = onDocumentMouseScroll
 
-
-
-    let clamp = function(num:number, min:number, max:number):number {
-        return num < min
-               ? max
-               : num > max
-               ? min
-               : num;
+    type ele = {
+        el: Element,
+        bounds: DOMRect,
+        offsetY: number,
     }
 
-    const lista = obj_events.events
+    let containerBounds: DOMRect;
 
-    const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
+    const lista = obj_events.events;
+
+
+    // Store items as an array of objects
+    const items = Array.from(document.querySelectorAll('.secao')).map(elem => ({el:elem} as ele))
+
+    const storeBounds = function (){
+        // Store the bounds of the container
+        containerBounds = container.getBoundingClientRect() // triggers reflow
+        // Store the bounds of each item
+        items.forEach((item) => {
+            item.bounds = item.el.getBoundingClientRect() // triggers reflow
+            item.offsetY = item.bounds.top - containerBounds.top // store item offset distance from container
+        })
+    }
+    storeBounds() // Store bounds on load
+
+    let currentItem: ele;
+
+    let index = 0;
+
+    const detectCurrent = function (){
+        const scrollY = container.scrollTop // Container scroll position
+        const goal = container.clientHeight / 2 // Where we want the current item to be, 0 = top of the container
+
+        // Find item closest to the goal
+        currentItem = items.reduce((prev, curr) => {
+            return (Math.abs(curr.offsetY - scrollY - goal) < Math.abs(prev.offsetY - scrollY - goal) ? curr : prev); // return the closest to the goal
+        });
+
+        let newindex = Number(currentItem.el.id)-1;
+        if(index != newindex){
+            const mesh = scene.getObjectByName('album') as THREE.Mesh;
+            const texture = new THREE.TextureLoader().load(lista[newindex]['link_imagem']);
+            const mat = mesh.material as THREE.MeshBasicMaterial;
+            // const temp = mat.map as THREE.Texture;
+            mat.map = texture;
+            mat.needsUpdate = true;
+            index = newindex;
+        }
+
+
+
+
+    }
+    detectCurrent() // Detect the current item on load
+
+
+    // let clamp = function (num: number, min: number, max: number): number {
+    //     return num < min
+    //             ? max
+    //             : num > max
+    //             ? min
+    //             : num;
+    // }
+
+
+
+    // let scrollPercent = ((container.scrollTop || container.scrollTop) /
+    //     ((container.scrollHeight || container.scrollHeight) -
+    //         container.clientHeight));
+    // let index = Math.floor((scrollPercent * 100) / obj_events.events.length);
+    // console.log(Math.floor((scrollPercent * 100) / obj_events.events.length));
+
+
+    const mesh = scene.getObjectByName('album') as THREE.Mesh;
     const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
     const mat = mesh.material as THREE.MeshBasicMaterial;
     mat.map = texture;
     mat.needsUpdate = true
 
-    let faz = true;
-    console.log(faz)
-    let render = function() {
+    // let faz = true;
+    // console.log(faz)
+    let render = function () {
         // fpsGraph.begin()
 
 
         // mesh.rotation.y = (scrollPercent/100) * (Math.PI*2);
         // console.log(Math.floor(scrollPercent/(obj_events.events.length-1)))
-
-        if ((((container.scrollTop / 1000) % Math.PI) > Math.PI/2) && faz) {
-            faz = false;
-            // mesh.rotation.y -= Math.PI;
-            const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
-            const mat = mesh.material as THREE.MeshBasicMaterial;
-            // const temp = mat.map as THREE.Texture;
-            mat.map = texture;
-            mat.needsUpdate = true;
-            index = clamp(index+1, 0, obj_events.events.length-1);
-        }
-        if((((container.scrollTop / 1000) % Math.PI) < Math.PI/2)){
-            faz = true;
-        }
+        // console.log(index)
+        // if ((((container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI) > Math.PI / 2) && faz) {
+        //     faz = false;
+        //     // mesh.rotation.y -= Math.PI;
+        //     const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
+        //     const mat = mesh.material as THREE.MeshBasicMaterial;
+        //     // const temp = mat.map as THREE.Texture;
+        //     mat.map = texture;
+        //     mat.needsUpdate = true;
+        //     index = clamp(index + 1, 0, obj_events.events.length - 1);
+        // }
+        // if ((((container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI) < Math.PI / 2)) {
+        //     faz = true;
+        // }
 
 
         renderer.render(scene, camera);
         // fpsGraph.end()
     };
-    renderer.setAnimationLoop( render );
+    renderer.setAnimationLoop(render);
 }
 
 init();

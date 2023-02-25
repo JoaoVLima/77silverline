@@ -1,5 +1,6 @@
 html, body {
   overflow: hidden; /* Hide scrollbars */
+    margin: 0;
 }
 canvas {
     width: 100vw;
