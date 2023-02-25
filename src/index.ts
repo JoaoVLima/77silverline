@@ -61,19 +61,6 @@ async function init() {
         const mesh = scene.getObjectByName('album') as THREE.Mesh;
         mesh.rotation.y = (container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI;
 
-        // let newindex = Math.floor((scrollPercent*100)/obj_events.events.length);
-        // console.log((container.scrollTop / 1000) % Math.PI);
-        // if(index != newindex){
-        //     const lista = obj_events.events
-        //
-        //     const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
-        //     const mat = mesh.material as THREE.MeshBasicMaterial;
-        //     mat.map = texture;
-        //     mat.needsUpdate = true
-        //     index = newindex;
-        // }
-
-
     };
     container.onscroll = onDocumentMouseScroll
 
@@ -130,7 +117,7 @@ async function init() {
 
 
     }
-    detectCurrent() // Detect the current item on load
+    detectCurrent();
 
 
     // let clamp = function (num: number, min: number, max: number): number {
@@ -141,45 +128,14 @@ async function init() {
     //             : num;
     // }
 
-
-
-    // let scrollPercent = ((container.scrollTop || container.scrollTop) /
-    //     ((container.scrollHeight || container.scrollHeight) -
-    //         container.clientHeight));
-    // let index = Math.floor((scrollPercent * 100) / obj_events.events.length);
-    // console.log(Math.floor((scrollPercent * 100) / obj_events.events.length));
-
-
     const mesh = scene.getObjectByName('album') as THREE.Mesh;
     const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
     const mat = mesh.material as THREE.MeshBasicMaterial;
     mat.map = texture;
     mat.needsUpdate = true
 
-    // let faz = true;
-    // console.log(faz)
     let render = function () {
         // fpsGraph.begin()
-
-
-        // mesh.rotation.y = (scrollPercent/100) * (Math.PI*2);
-        // console.log(Math.floor(scrollPercent/(obj_events.events.length-1)))
-        // console.log(index)
-        // if ((((container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI) > Math.PI / 2) && faz) {
-        //     faz = false;
-        //     // mesh.rotation.y -= Math.PI;
-        //     const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
-        //     const mat = mesh.material as THREE.MeshBasicMaterial;
-        //     // const temp = mat.map as THREE.Texture;
-        //     mat.map = texture;
-        //     mat.needsUpdate = true;
-        //     index = clamp(index + 1, 0, obj_events.events.length - 1);
-        // }
-        // if ((((container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI) < Math.PI / 2)) {
-        //     faz = true;
-        // }
-
-
         renderer.render(scene, camera);
         // fpsGraph.end()
     };
