@@ -95,12 +95,12 @@ async function init() {
 
     const detectCurrent = function (){
         const scrollY = container.scrollTop // Container scroll position
-        const goal = container.clientHeight / 2 // Where we want the current item to be, 0 = top of the container
-        console.log(goal)
+        const goal = 0 // Where we want the current item to be, 0 = top of the container
         // Find item closest to the goal
         currentItem = items.reduce((prev, curr) => {
             return (Math.abs(curr.offsetY - scrollY - goal) < Math.abs(prev.offsetY - scrollY - goal) ? curr : prev); // return the closest to the goal
         });
+
 
         let newindex = Number(currentItem.el.id)-1;
         if(index != newindex){
