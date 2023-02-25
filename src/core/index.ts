@@ -25,8 +25,8 @@ export default class Core {
 
     /* 🎥 Camera */
     private initCamera(): THREE.PerspectiveCamera {
-        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
-        camera.position.set(8, 0, 0);
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 20);
+        camera.position.set(0, 0, 8);
         camera.lookAt(new THREE.Vector3(0, 0, 0))
         return camera;
     }
@@ -43,8 +43,8 @@ export default class Core {
         // texture.minFilter = THREE.LinearFilter;
         // texture.magFilter = THREE.LinearFilter;
         // texture.encoding = THREE.sRGBEncoding;
-        //
-        //
+
+
         // const spotLight = new THREE.SpotLight(0xffffff, 1);
         // spotLight.position.set(25, 50, 25);
         // spotLight.angle = Math.PI / 6;
@@ -75,14 +75,14 @@ export default class Core {
         let objects: THREE.Mesh[] = []
 
         // create a plane geometry
-        const geometry = new THREE.BoxGeometry( 2, 2,0.1);
+        const geometry = new THREE.BoxGeometry(2, 2,0.1);
 
         // create a material with the texture
         const material = new THREE.MeshBasicMaterial();
 
         // create a mesh with the geometry and material
         const mesh = new THREE.Mesh(geometry, material);
-        mesh.rotation.y += Math.PI/2
+        mesh.position.set(0,0,0);
         mesh.name = 'album';
         objects.push(mesh)
 
