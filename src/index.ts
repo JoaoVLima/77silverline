@@ -54,24 +54,27 @@ async function init(){
     //     console.log(event.clientX);
     // }
     // document.addEventListener( 'mousemove', onDocumentMouseMove );
+    const container = document.getElementById("container") as HTMLDivElement;
 
-    let scrollPercent = ((document.documentElement.scrollTop || document.body.scrollTop) /
-                        ((document.documentElement.scrollHeight || document.body.scrollHeight) -
-                        document.documentElement.clientHeight));
+
+    let scrollPercent = ((container.scrollTop || container.scrollTop) /
+                        ((container.scrollHeight || container.scrollHeight) -
+                        container.clientHeight));
     let index = Math.floor((scrollPercent*100)/obj_events.events.length);
     console.log(Math.floor((scrollPercent*100)/obj_events.events.length));
 
+
     let onDocumentMouseScroll = function() {
         //calculate the current scroll progress as a percentage
-        scrollPercent = ((document.documentElement.scrollTop || document.body.scrollTop) /
-                        ((document.documentElement.scrollHeight || document.body.scrollHeight) -
-                        document.documentElement.clientHeight));
+        scrollPercent = ((container.scrollTop || container.scrollTop) /
+                        ((container.scrollHeight || container.scrollHeight) -
+                        container.clientHeight));
 
         const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
-        mesh.rotation.y = (document.documentElement.scrollTop / 1000) % Math.PI;
+        mesh.rotation.y = (container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI;
 
         // let newindex = Math.floor((scrollPercent*100)/obj_events.events.length);
-        console.log((document.documentElement.scrollTop / 1000) % Math.PI);
+        // console.log((container.scrollTop / 1000) % Math.PI);
         // if(index != newindex){
         //     const lista = obj_events.events
         //
@@ -85,7 +88,7 @@ async function init(){
 
 
     };
-    document.body.onscroll = onDocumentMouseScroll
+    container.onscroll = onDocumentMouseScroll
 
 
 
@@ -114,7 +117,7 @@ async function init(){
         // mesh.rotation.y = (scrollPercent/100) * (Math.PI*2);
         // console.log(Math.floor(scrollPercent/(obj_events.events.length-1)))
 
-        if ((((document.documentElement.scrollTop / 1000) % Math.PI) > Math.PI/2) && faz) {
+        if ((((container.scrollTop / 1000) % Math.PI) > Math.PI/2) && faz) {
             faz = false;
             // mesh.rotation.y -= Math.PI;
             const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
@@ -124,7 +127,7 @@ async function init(){
             mat.needsUpdate = true;
             index = clamp(index+1, 0, obj_events.events.length-1);
         }
-        if((((document.documentElement.scrollTop / 1000) % Math.PI) < Math.PI/2)){
+        if((((container.scrollTop / 1000) % Math.PI) < Math.PI/2)){
             faz = true;
         }
 
