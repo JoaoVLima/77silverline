@@ -134,6 +134,23 @@ async function init() {
     mat.map = texture;
     mat.needsUpdate = true
 
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    let onDocumentMouseMove = function (event:MouseEvent) {
+        mouseX = (event.clientX - window.innerHeight/2);
+        mouseY = (event.clientY - window.innerWidth/2);
+
+        camera.position.x = ( mouseX - camera.position.x ) * .003;
+        camera.position.y = ( - mouseY - camera.position.y ) * .003;
+
+        camera.lookAt( scene.position );
+    }
+
+    document.addEventListener( 'mousemove', onDocumentMouseMove );
+
+
     let render = function () {
         // fpsGraph.begin()
         renderer.render(scene, camera);
