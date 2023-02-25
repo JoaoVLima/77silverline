@@ -1,12 +1,22 @@
 import Core from './core';
 import Events from './events';
 import * as THREE from "three";
+// import {Pane} from 'tweakpane';
+// import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
 
 async function init(){
     const core = new Core();
     const camera = core.camera
     const scene = core.scene
     const renderer = core.renderer
+
+    // const pane = new Pane();
+    // pane.registerPlugin(EssentialsPlugin);
+    // const fpsGraph = pane.addBlade({
+    //   view: 'fpsgraph',
+    //   label: 'fpsgraph',
+    //   lineCount: 2,
+    // });
 
     let obj_events = new Events([{
         "id": "77SL001",
@@ -39,15 +49,45 @@ async function init(){
 
     window.addEventListener( 'resize', onWindowResize );
 
-    let clamp = function(num:number, min:number, max:number):number {
-        return num < min
-               ? max
-               : num > max
-               ? min
-               : num;
-    }
+    // let onDocumentMouseMove = function (event:MouseEvent) {
+    //     console.log(event.clientX);
+    // }
+    // document.addEventListener( 'mousemove', onDocumentMouseMove );
 
     let index = 0;
+    let scrollPercent = 0
+    let onDocumentMouseScroll = function() {
+        //calculate the current scroll progress as a percentage
+        scrollPercent = ((document.documentElement.scrollTop || document.body.scrollTop) /
+                        ((document.documentElement.scrollHeight || document.body.scrollHeight) -
+                        document.documentElement.clientHeight)) * 100;
+
+        let newindex = Math.floor(scrollPercent/(obj_events.events.length-1));
+        if(index != newindex){
+            const lista = obj_events.events
+
+            const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
+            const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
+            const mat = mesh.material as THREE.MeshBasicMaterial;
+            mat.map = texture;
+            mat.needsUpdate = true
+            index = newindex;
+        }
+
+
+
+    };
+    document.body.onscroll = onDocumentMouseScroll
+
+
+
+    // let clamp = function(num:number, min:number, max:number):number {
+    //     return num < min
+    //            ? max
+    //            : num > max
+    //            ? min
+    //            : num;
+    // }
 
     const lista = obj_events.events
 
@@ -55,27 +95,28 @@ async function init(){
     const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
     const mat = mesh.material as THREE.MeshBasicMaterial;
     mat.map = texture;
+    mat.needsUpdate = true
 
-    index++;
 
     let render = function() {
-
+        // fpsGraph.begin()
         const mesh = scene.getObjectByName( 'album' ) as THREE.Mesh;
 
-        const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
-
+        // const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
+        // mesh.rotation.y = (scrollPercent/100) * (Math.PI*2);
+        // console.log(Math.floor(scrollPercent/(obj_events.events.length-1)))
         mesh.rotation.y += 0.02;
-        if (mesh.rotation.y > Math.PI) {
-            mesh.rotation.y -= Math.PI;
-            const mat = mesh.material as THREE.MeshBasicMaterial;
-            // const temp = mat.map as THREE.Texture;
-            mat.map = texture;
-            mat.needsUpdate = true;
-            index = clamp(index+1, 0, obj_events.events.length-1);
-        }
+        // if (mesh.rotation.y > Math.PI) {
+        //     mesh.rotation.y -= Math.PI;
+        //     const mat = mesh.material as THREE.MeshBasicMaterial;
+        //     // const temp = mat.map as THREE.Texture;
+        //     mat.map = texture;
+        //     mat.needsUpdate = true;
+        //     index = clamp(index+1, 0, obj_events.events.length-1);
+        // }
 
         renderer.render(scene, camera);
-
+        // fpsGraph.end()
     };
     renderer.setAnimationLoop( render );
 }
