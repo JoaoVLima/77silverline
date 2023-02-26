@@ -139,13 +139,13 @@ async function init() {
     let mouseY = 0;
 
     let onDocumentMouseMove = function (event:MouseEvent) {
-        mouseX = (event.clientX - window.innerHeight/2);
-        mouseY = (event.clientY - window.innerWidth/2);
+        mouseX = (event.clientX - (window.innerWidth/2));
+        mouseY = (event.clientY - (window.innerHeight/2));
 
-        camera.position.x = ( mouseX - camera.position.x ) * .003;
-        camera.position.y = ( - mouseY - camera.position.y ) * .003;
+        camera.position.x = (mouseX - camera.position.x) * .003;
+        camera.position.y = (-mouseY - camera.position.y) * .006;
 
-        camera.lookAt( scene.position );
+        camera.lookAt(scene.position);
     }
 
     document.addEventListener( 'mousemove', onDocumentMouseMove );
