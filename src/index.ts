@@ -47,22 +47,32 @@ async function init() {
         renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
-
     window.addEventListener('resize', onWindowResize);
 
-    const container = document.getElementById("container") as HTMLDivElement;
 
-    let onDocumentMouseScroll = function () {
-        //calculate the current scroll progress as a percentage
-        // scrollPercent = ((container.scrollTop || container.scrollTop) /
-        //                 ((container.scrollHeight || container.scrollHeight) -
-        //                 container.clientHeight));
+    const main = document.getElementsByTagName("main")[0] as HTMLDivElement;
+    const progress = document.getElementsByClassName("progress")[0] as HTMLDivElement;
+    main.addEventListener("scroll", () => {
+        let scrollPercent = ((main.scrollTop || main.scrollTop) /
+                            ((main.scrollHeight || main.scrollHeight) -
+                            main.clientHeight));
+        progress.style.height = `${scrollPercent*100}vh`;
+
         detectCurrent();
         const mesh = scene.getObjectByName('album') as THREE.Mesh;
-        mesh.rotation.y = (container.scrollTop / (container.clientHeight * 0.3191)) % Math.PI;
+        mesh.rotation.y = (main.scrollTop / (main.clientHeight * 0.3191)) % Math.PI;
 
-    };
-    container.onscroll = onDocumentMouseScroll
+    });
+
+    // let onDocumentMouseScroll = function () {
+    //     //calculate the current scroll progress as a percentage
+    //     // scrollPercent = ((container.scrollTop || container.scrollTop) /
+    //     //                 ((container.scrollHeight || container.scrollHeight) -
+    //     //                 container.clientHeight));
+    //
+    //
+    // };
+    // main.onscroll = onDocumentMouseScroll
 
     type ele = {
         el: Element,
@@ -76,11 +86,11 @@ async function init() {
 
 
     // Store items as an array of objects
-    const items = Array.from(document.querySelectorAll('.secao')).map(elem => ({el:elem} as ele))
+    const items = Array.from(document.getElementsByTagName('section')).map(elem => ({el: elem} as unknown as ele))
 
     const storeBounds = function (){
         // Store the bounds of the container
-        containerBounds = container.getBoundingClientRect() // triggers reflow
+        containerBounds = main.getBoundingClientRect() // triggers reflow
         // Store the bounds of each item
         items.forEach((item) => {
             item.bounds = item.el.getBoundingClientRect() // triggers reflow
@@ -94,7 +104,7 @@ async function init() {
     let index = 0;
 
     const detectCurrent = function (){
-        const scrollY = container.scrollTop // Container scroll position
+        const scrollY = main.scrollTop // Container scroll position
         const goal = 0 // Where we want the current item to be, 0 = top of the container
         // Find item closest to the goal
         currentItem = items.reduce((prev, curr) => {
@@ -157,6 +167,6 @@ async function init() {
         // fpsGraph.end()
     };
     renderer.setAnimationLoop(render);
-}
 
+}
 init();
