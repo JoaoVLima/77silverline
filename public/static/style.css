@@ -24,7 +24,7 @@
     --color-font-tertiary: #f8f9fa;
 
 
-    --color-bg: #fff;
+    --color-bg: #000;
 
     --font-primary: 'Josefin Sans', sans-serif;
     --font-secondary: 'Roboto', sans-serif;
@@ -39,10 +39,10 @@
 
 body {
     background-color: var(--color-bg);
-    background-image: url("https://i1.sndcdn.com/artworks-7ffnfhEHoFzB3Egm-Qcz2eQ-t300x300.jpg");
+    /*background-image: url("https://i1.sndcdn.com/artworks-7ffnfhEHoFzB3Egm-Qcz2eQ-t300x300.jpg");
     background-attachment: fixed;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
 
     overflow: hidden;
 
@@ -60,7 +60,13 @@ main {
 }
 
 #ThreeCanvas {
-    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 main::-webkit-scrollbar {
