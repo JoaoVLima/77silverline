@@ -1,5 +1,3 @@
-
-
 type Event = {
     "id": string,
     "artist": string,
@@ -13,7 +11,7 @@ type Event = {
 }
 
 export default class Events {
-    public events: Event[]; // Remover globalThis
+    public events: Event[];
 
     constructor(events: Event[]) {
         this.events = events;

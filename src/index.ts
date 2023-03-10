@@ -14,9 +14,9 @@ import * as THREE from "three";
 
 async function init() {
     const core = new Core();
-    const camera = core.camera
-    const scene = core.scene
-    const renderer = core.renderer
+    const camera = core.camera;
+    const scene = core.scene;
+    const renderer = core.renderer;
 
     // const pane = new Pane();
     // pane.registerPlugin(EssentialsPlugin);
@@ -69,9 +69,6 @@ async function init() {
 
     let containerBounds: DOMRect;
 
-    const lista = obj_events.events;
-
-
     // Store items as an array of objects
     const items = Array.from(document.getElementsByTagName('section')).map(object => ({
         element: object,
@@ -101,8 +98,12 @@ async function init() {
     window.addEventListener('resize', onWindowResize);
 
     let currentItem: element_wrapper;
-
     let index = 0;
+    const album = scene.getObjectByName('album') as THREE.Mesh;
+    let texture = new THREE.TextureLoader().load(obj_events.events[index]['link_imagem']);
+    let mat = album.material as THREE.MeshBasicMaterial;
+    mat.map = texture;
+    mat.needsUpdate = true;
 
     const detectCurrent = function (){
         const scrollY = main.scrollTop // Container scroll position
@@ -117,23 +118,17 @@ async function init() {
 
         let newindex = Number(currentItem.element.id)-1;
         if(index != newindex){
-            const mesh = scene.getObjectByName('album') as THREE.Mesh;
-            const texture = new THREE.TextureLoader().load(lista[newindex]['link_imagem']);
-            const mat = mesh.material as THREE.MeshBasicMaterial;
+            texture = new THREE.TextureLoader().load(obj_events.events[newindex]['link_imagem']);
             // const temp = mat.map as THREE.Texture;
             mat.map = texture;
             mat.needsUpdate = true;
             index = newindex;
         }
-
-
-
-
     }
     detectCurrent();
 
     // const mesh = scene.getObjectByName('album') as THREE.Mesh;
-    // const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
+    // const texture = new THREE.TextureLoader().load(events[index]['link_imagem']);
     // const mat = mesh.material as THREE.MeshBasicMaterial;
     // mat.map = texture;
     // mat.needsUpdate = true
