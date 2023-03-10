@@ -4,6 +4,14 @@ import * as THREE from "three";
 // import {Pane} from 'tweakpane';
 // import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
 
+// function clamp(num: number, min: number, max: number): number {
+//     return num < min
+//             ? max
+//             : num > max
+//             ? min
+//             : num;
+// }
+
 async function init() {
     const core = new Core();
     const camera = core.camera
@@ -53,10 +61,10 @@ async function init() {
     }
     main.addEventListener("scroll", onMainMouseScroll);
 
-    type element = {
-        object: Element,
-        bounds: DOMRect | null,
-        offsetY: number | null,
+    type element_wrapper = {
+        element: Element,
+        bounds: DOMRect,
+        offsetY: number,
     }
 
     let containerBounds: DOMRect;
@@ -65,30 +73,34 @@ async function init() {
 
 
     // Store items as an array of objects
-    const items = Array.from(document.getElementsByTagName('section')).map(object => ({object: object, bounds: null, offsetY: null} as element))
+    const items = Array.from(document.getElementsByTagName('section')).map(object => ({
+        element: object,
+        bounds: object.getBoundingClientRect(),
+        offsetY: object.getBoundingClientRect().top
+    } as element_wrapper)) as element_wrapper[]
 
     const storeBounds = function (){
         // Store the bounds of the container
         containerBounds = main.getBoundingClientRect() // triggers reflow
         // Store the bounds of each item
         items.forEach((item) => {
-            item.bounds = item.object.getBoundingClientRect() // triggers reflow
+            item.bounds = item.element.getBoundingClientRect() // triggers reflow
             item.offsetY = item.bounds.top - containerBounds.top // store item offset distance from container
         })
     }
     storeBounds() // Store bounds on load
 
-    // const onWindowResize = function () {
-    //     storeBounds();
-    //     camera.aspect = window.innerWidth / window.innerHeight;
-    //     camera.updateProjectionMatrix();
-    //
-    //     renderer.setSize(window.innerWidth, window.innerHeight);
-    //
-    // }
-    // window.addEventListener('resize', onWindowResize);
+    const onWindowResize = function () {
+        storeBounds();
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
 
-    let currentItem: element;
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+    }
+    window.addEventListener('resize', onWindowResize);
+
+    let currentItem: element_wrapper;
 
     let index = 0;
 
@@ -96,15 +108,14 @@ async function init() {
         const scrollY = main.scrollTop // Container scroll position
         const goal = 0 // Where we want the current item to be, 0 = top of the container
         // Find item closest to the goal
-        currentItem = items.reduce((prev:any, curr:any) => {
-            if (curr.offsetY && prev.offsetY){
+        currentItem = items.reduce((prev:element_wrapper|any, curr:element_wrapper) => {
+            if (curr && prev || curr.offsetY && prev.offsetY){
                 return (Math.abs(curr.offsetY - scrollY - goal) < Math.abs(prev.offsetY - scrollY - goal) ? curr : prev); // return the closest to the goal
             }
             return null
         });
 
-
-        let newindex = Number(currentItem.object.id)-1;
+        let newindex = Number(currentItem.element.id)-1;
         if(index != newindex){
             const mesh = scene.getObjectByName('album') as THREE.Mesh;
             const texture = new THREE.TextureLoader().load(lista[newindex]['link_imagem']);
@@ -120,23 +131,13 @@ async function init() {
 
     }
     detectCurrent();
-    //
-    //
-    // // let clamp = function (num: number, min: number, max: number): number {
-    // //     return num < min
-    // //             ? max
-    // //             : num > max
-    // //             ? min
-    // //             : num;
-    // // }
-    //
+
     // const mesh = scene.getObjectByName('album') as THREE.Mesh;
     // const texture = new THREE.TextureLoader().load(lista[index]['link_imagem']);
     // const mat = mesh.material as THREE.MeshBasicMaterial;
     // mat.map = texture;
     // mat.needsUpdate = true
-    //
-    //
+
     let mouseX = 0;
     let mouseY = 0;
 
