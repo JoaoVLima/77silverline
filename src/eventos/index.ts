@@ -1,4 +1,4 @@
-type Event = {
+export type Evento = {
     "id": string,
     "artist": string,
     "titulo": string,
@@ -10,11 +10,11 @@ type Event = {
     "link_soundcloud": string,
 }
 
-export default class Events {
-    public events: Event[];
+export default class Eventos {
+    public eventos: Evento[];
 
-    constructor(events: Event[]) {
-        this.events = events;
+    constructor(eventos: Evento[]) {
+        this.eventos = eventos;
     }
 
 }

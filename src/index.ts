@@ -1,5 +1,6 @@
 import Core from './core';
-import Events from './events';
+import { Evento } from './eventos';
+import Eventos from './eventos';
 import * as THREE from "three";
 // import {Pane} from 'tweakpane';
 // import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
@@ -27,7 +28,7 @@ async function init() {
     // });
 
 
-    let obj_events = new Events([{
+    let obj_events = new Eventos([{
         "id": "77SL001",
         "artist": "Truno",
         "titulo": "Valentine",
@@ -39,15 +40,42 @@ async function init() {
         "link_soundcloud": "https://soundcloud.com/truno77/sets/valentine?si=dd3b2d052e804b15923ea12167806eb8&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing"
     }]);
 
-    await fetch('../events.json')
+    await fetch('../eventos.json')
         .then(result => result.json())
         .then(data => {
-            obj_events = new Events(data);
+            obj_events = new Eventos(data);
         })
         .catch(error => console.error(error));
 
     const main = document.getElementsByTagName("main")[0] as HTMLDivElement;
     const progress = document.getElementsByClassName("progress")[0] as HTMLDivElement;
+
+    const sectionComponent = function (e:Evento, index:number) {
+        let section = document.createElement('section');
+        section.className = 'grid-container';
+        section.accessKey = String(index);
+        section.id = e.id;
+
+        let div = document.createElement('div');
+        div.className = 'grid-item grid-middle';
+
+        let h1 = document.createElement('h1');
+        h1.innerText = e.titulo
+        div.appendChild(h1);
+
+        let p = document.createElement('p');
+        p.innerText = e.descricao
+        div.appendChild(p);
+
+        section.appendChild(div);
+        main.appendChild(section);
+    };
+
+     Array.from(obj_events.eventos).forEach(function callback(value, index){
+        sectionComponent(value, index)
+    });
+
+
 
     const onMainMouseScroll = function () {
         let scrollPercent = ((main.scrollTop || main.scrollTop) /
@@ -62,7 +90,7 @@ async function init() {
     main.addEventListener("scroll", onMainMouseScroll);
 
     type element_wrapper = {
-        element: Element,
+        element: HTMLDivElement,
         bounds: DOMRect,
         offsetY: number,
     }
@@ -100,7 +128,7 @@ async function init() {
     let currentItem: element_wrapper;
     let index = 0;
     const album = scene.getObjectByName('album') as THREE.Mesh;
-    let texture = new THREE.TextureLoader().load(obj_events.events[index]['link_imagem']);
+    let texture = new THREE.TextureLoader().load(obj_events.eventos[index]['link_imagem']);
     let mat = album.material as THREE.MeshBasicMaterial;
     mat.map = texture;
     mat.needsUpdate = true;
@@ -116,9 +144,9 @@ async function init() {
             return null
         });
 
-        let newindex = Number(currentItem.element.id)-1;
+        let newindex = Number(currentItem.element.accessKey);
         if(index != newindex){
-            texture = new THREE.TextureLoader().load(obj_events.events[newindex]['link_imagem']);
+            texture = new THREE.TextureLoader().load(obj_events.eventos[newindex]['link_imagem']);
             // const temp = mat.map as THREE.Texture;
             mat.map = texture;
             mat.needsUpdate = true;
@@ -128,7 +156,7 @@ async function init() {
     detectCurrent();
 
     // const mesh = scene.getObjectByName('album') as THREE.Mesh;
-    // const texture = new THREE.TextureLoader().load(events[index]['link_imagem']);
+    // const texture = new THREE.TextureLoader().load(eventos[index]['link_imagem']);
     // const mat = mesh.material as THREE.MeshBasicMaterial;
     // mat.map = texture;
     // mat.needsUpdate = true
