@@ -59,15 +59,19 @@ async function init() {
         let div = document.createElement('div');
         div.className = 'grid-item grid-middle';
 
+        let wrapper_main = document.createElement('div');
+        wrapper_main.className = 'wrapper-main';
+
         let h1 = document.createElement('h1');
         h1.innerText = e.titulo
-        div.appendChild(h1);
+        wrapper_main.appendChild(h1);
 
         let p = document.createElement('p');
         p.innerText = e.descricao
-        div.appendChild(p);
+        wrapper_main.appendChild(p);
 
         section.appendChild(div);
+        div.appendChild(wrapper_main)
         main.appendChild(section);
     };
 

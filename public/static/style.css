@@ -178,8 +178,9 @@ a:hover {
 
 section h1 {
     font-family: var(--font-primary);
-    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-size: clamp(2.5rem, 4vw, 2.5rem);
     text-align: center;
+    margin-top: 23vh;
 }
 
 section p {
@@ -187,13 +188,8 @@ section p {
     text-align: justify;
 }
 
-.wrapper-main {
-    display: flex;
-    flex-direction: column;
-}
-
 .wrapper-main p {
-    align-self: flex-end;
+    margin-top: 42vh;
 }
 
 /* 'sm' applies to x-small devices (portrait phones, less than 576px) */
@@ -226,6 +222,14 @@ section p {
     .progress,
     header > ul {
         display: none;
+    }
+
+    section h1 {
+        margin-top: 15vh;
+    }
+
+    .wrapper-main p {
+        margin-top: 43vh;
     }
 
 }
