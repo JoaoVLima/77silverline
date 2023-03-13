@@ -175,13 +175,13 @@ async function init() {
         camera.position.x = (mouseX - camera.position.x) * .003;
         camera.position.y = (-mouseY - camera.position.y) * .006;
 
-        camera.lookAt(scene.position);
+        camera.lookAt(new THREE.Vector3(0, -0.5, 0));
     }
     document.addEventListener( 'mousemove', onDocumentMouseMove );
 
     const onDocumentMouseLeave = function () {
-        camera.position.set(0, 0, 8);
-        camera.lookAt(new THREE.Vector3(0, 0, 0))
+        camera.position.set(0, -0.5, 8);
+        camera.lookAt(new THREE.Vector3(0, -0.5, 0));
     }
     document.addEventListener( 'mouseleave', onDocumentMouseLeave );
 

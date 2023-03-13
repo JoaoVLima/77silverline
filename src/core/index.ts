@@ -20,14 +20,16 @@ export default class Core {
 
     /* 📦 Scene */
     private initScene(): THREE.Scene {
-        return new THREE.Scene();
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color( 0xffffff );
+        return scene;
     }
 
     /* 🎥 Camera */
     private initCamera(): THREE.PerspectiveCamera {
         const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 20);
-        camera.position.set(0, 0, 8);
-        camera.lookAt(new THREE.Vector3(0, 0, 0))
+        camera.position.set(0, -0.5, 8);
+        camera.lookAt(new THREE.Vector3(0, -0.5, 0))
         return camera;
     }
 
