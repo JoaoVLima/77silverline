@@ -183,7 +183,12 @@ async function init() {
         camera.position.x = (mouseX - camera.position.x) * .003;
         camera.position.y = (-mouseY - camera.position.y) * .006;
 
-        camera.lookAt(new THREE.Vector3(0, -0.5, 0));
+        if (window.innerWidth > 991.98){
+            camera.lookAt(new THREE.Vector3(0, -0.2, 0));
+        }
+        else {
+            camera.lookAt(new THREE.Vector3(0, -0.5, 0));
+        }
     }
     document.addEventListener( 'mousemove', onDocumentMouseMove );
 
