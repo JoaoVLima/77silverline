@@ -2,6 +2,9 @@ import Core from './core';
 import { Evento } from './eventos';
 import Eventos from './eventos';
 import * as THREE from "three";
+// import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+// import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+// import { GlitchPass } from 'three/addons/postprocessing/GlitchPass.js';
 // import {Pane} from 'tweakpane';
 // import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
 
@@ -185,9 +188,12 @@ async function init() {
     }
     document.addEventListener( 'mouseleave', onDocumentMouseLeave );
 
+    // const composer = new EffectComposer( renderer );
+
     let render = function () {
         // fpsGraph.begin()
         renderer.render(scene, camera);
+        // composer.render();
         // fpsGraph.end()
     };
     renderer.setAnimationLoop(render);

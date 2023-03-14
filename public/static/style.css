@@ -47,7 +47,7 @@ body {
     overflow: hidden;
 
     font-family: var(--font-secondary);
-    color: black;
+    color: #101010;
 }
 
 main {

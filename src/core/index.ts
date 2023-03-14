@@ -21,6 +21,19 @@ export default class Core {
     /* 📦 Scene */
     private initScene(): THREE.Scene {
         const scene = new THREE.Scene();
+
+        // const path = 'media/background/';
+        // const format = '.png';
+        // const urls = [
+        //     path + 'px' + format, path + 'nx' + format,
+        //     path + 'py' + format, path + 'ny' + format,
+        //     path + 'pz' + format, path + 'nz' + format
+        // ];
+        //
+        // const textureCube = new THREE.CubeTextureLoader().load( urls );
+        //
+        // scene.background = textureCube;
+
         scene.background = new THREE.Color( 0xffffff );
         return scene;
     }
@@ -47,20 +60,20 @@ export default class Core {
         // texture.encoding = THREE.sRGBEncoding;
 
 
-        // const spotLight = new THREE.SpotLight(0xffffff, 1);
-        // spotLight.position.set(25, 50, 25);
-        // spotLight.angle = Math.PI / 6;
-        // spotLight.penumbra = 1;
-        // spotLight.decay = 2;
-        // spotLight.distance = 100;
+        const spotLight = new THREE.SpotLight(0xff0000, 1);
+        spotLight.position.set(1, 1, -1);
+        spotLight.angle = Math.PI / 6;
+        spotLight.penumbra = 1;
+        spotLight.decay = 2;
+        spotLight.distance = 100;
         // spotLight.map = texture;
-        // spotLight.castShadow = true;
-        // spotLight.shadow.mapSize.width = 1024;
-        // spotLight.shadow.mapSize.height = 1024;
-        // spotLight.shadow.camera.near = 10;
-        // spotLight.shadow.camera.far = 200;
-        // spotLight.shadow.focus = 1;
-        // lights.push(spotLight)
+        spotLight.castShadow = true;
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+        spotLight.shadow.camera.near = 10;
+        spotLight.shadow.camera.far = 200;
+        spotLight.shadow.focus = 1;
+        lights.push(spotLight)
 
         // const spotLightHelper = new THREE.SpotLightHelper(spotLight);
         // this.scene.add(spotLightHelper)
@@ -76,6 +89,11 @@ export default class Core {
     private initObjects(): THREE.Mesh[] {
         let objects: THREE.Mesh[] = []
 
+
+
+
+
+
         // create a plane geometry
         const geometry = new THREE.BoxGeometry(2, 2,0.1);
 
@@ -87,6 +105,25 @@ export default class Core {
         mesh.position.set(0,0,0);
         mesh.name = 'album';
         objects.push(mesh)
+
+
+
+        // create a plane geometry
+        // const geometry2 = new THREE.BoxGeometry(1, 1,0.1);
+        //
+        // // create a material with the texture
+        // const material2 = new THREE.MeshBasicMaterial();
+        //
+        // // create a mesh with the geometry and material
+        // const mesh2 = new THREE.Mesh(geometry2, material2);
+        // mesh2.position.set(4,4,-9);
+        // mesh2.name = 'moon';
+        //
+        // let texture2 = new THREE.TextureLoader().load('https://static.vecteezy.com/system/resources/thumbnails/000/602/084/small/7_-_New_Moon.jpg');
+        // mesh2.material.map = texture2;
+        // mesh2.material.needsUpdate = true;
+        //
+        // objects.push(mesh2)
 
         objects.forEach((object: THREE.Mesh) => {
             this.scene.add(object)
