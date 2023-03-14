@@ -34,13 +34,14 @@ export default class Core {
         //
         // scene.background = textureCube;
 
-        scene.background = new THREE.Color( 0xffffff );
+
+        scene.background = new THREE.Color( 0xfefefe );
         return scene;
     }
 
     /* 🎥 Camera */
     private initCamera(): THREE.PerspectiveCamera {
-        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 20);
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 200);
         camera.position.set(0, -0.5, 8);
         camera.lookAt(new THREE.Vector3(0, -0.5, 0))
         return camera;
@@ -50,7 +51,7 @@ export default class Core {
     private initLights(): THREE.Light[] {
         let lights: THREE.Light[] = []
 
-        // const ambient = new THREE.HemisphereLight(0xffffff, 0x444444, 0.01);
+        // const ambient = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
         // lights.push(ambient)
 
         // const loader = new THREE.TextureLoader().setPath('./media/');
@@ -59,20 +60,8 @@ export default class Core {
         // texture.magFilter = THREE.LinearFilter;
         // texture.encoding = THREE.sRGBEncoding;
 
-
-        const spotLight = new THREE.SpotLight(0xff0000, 1);
-        spotLight.position.set(1, 1, -1);
-        spotLight.angle = Math.PI / 6;
-        spotLight.penumbra = 1;
-        spotLight.decay = 2;
-        spotLight.distance = 100;
-        // spotLight.map = texture;
-        spotLight.castShadow = true;
-        spotLight.shadow.mapSize.width = 1024;
-        spotLight.shadow.mapSize.height = 1024;
-        spotLight.shadow.camera.near = 10;
-        spotLight.shadow.camera.far = 200;
-        spotLight.shadow.focus = 1;
+        const spotLight = new THREE.SpotLight( 0xffffff, 1 );
+        spotLight.position.set(0, 0, 4);
         lights.push(spotLight)
 
         // const spotLightHelper = new THREE.SpotLightHelper(spotLight);
@@ -89,16 +78,13 @@ export default class Core {
     private initObjects(): THREE.Mesh[] {
         let objects: THREE.Mesh[] = []
 
-
-
-
-
-
         // create a plane geometry
         const geometry = new THREE.BoxGeometry(2, 2,0.1);
 
         // create a material with the texture
-        const material = new THREE.MeshBasicMaterial();
+        const material = new THREE.MeshStandardMaterial();
+
+        material.emissive.setHex(0x1e1e1e)
 
         // create a mesh with the geometry and material
         const mesh = new THREE.Mesh(geometry, material);
