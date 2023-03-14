@@ -83,6 +83,7 @@ export default class Core {
 
         // create a material with the texture
         const material = new THREE.MeshStandardMaterial();
+        material.color = new THREE.Color( 0xffffff )
 
         material.emissive.setHex(0x1e1e1e)
 

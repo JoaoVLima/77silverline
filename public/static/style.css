@@ -39,10 +39,10 @@
 
 body {
     background-color: var(--color-bg);
-    /*background-image: url("https://i1.sndcdn.com/artworks-7ffnfhEHoFzB3Egm-Qcz2eQ-t300x300.jpg");
+    background-image: url("https://i1.sndcdn.com/artworks-7ffnfhEHoFzB3Egm-Qcz2eQ-t300x300.jpg");
     background-attachment: fixed;
     background-position: center;
-    background-repeat: no-repeat;*/
+    background-repeat: no-repeat;
 
     overflow: hidden;
 
@@ -180,18 +180,22 @@ a:hover {
 
 section h1 {
     font-family: var(--font-primary);
-    font-size: clamp(2.2rem, 4vw, 2.5rem);
+    font-size: 3.5vw;
+    font-weight: normal;
     text-align: center;
     margin-top: 14vh;
 }
 
 section p {
-    font-size: clamp(1.5vw);
+    font-size: 1vw;
     text-align: justify;
 }
 
 .wrapper-main p {
-    margin-top: 42vh;
+    margin-top: 49vh;
+    padding-left: 2.8vw;
+    padding-right: 2.8vw;
+    line-height: 1.4rem;
 }
 
 /* 'sm' applies to x-small devices (portrait phones, less than 576px) */

@@ -124,10 +124,18 @@ async function init() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
 
+        if (window.innerWidth > 991.98){
+            camera.position.set(0, -0.2, 6);
+            camera.lookAt(new THREE.Vector3(0, -0.2, 0));
+        }
+
         renderer.setSize(window.innerWidth, window.innerHeight);
+
 
     }
     window.addEventListener('resize', onWindowResize);
+    onWindowResize();
+
 
     let currentItem: element_wrapper;
     let index = 0;
@@ -180,8 +188,15 @@ async function init() {
     document.addEventListener( 'mousemove', onDocumentMouseMove );
 
     const onDocumentMouseLeave = function () {
-        camera.position.set(0, -0.5, 8);
-        camera.lookAt(new THREE.Vector3(0, -0.5, 0));
+        if (window.innerWidth > 991.98){
+            camera.position.set(0, -0.2, 6);
+            camera.lookAt(new THREE.Vector3(0, -0.2, 0));
+        }
+        else {
+            camera.position.set(0, -0.5, 8);
+            camera.lookAt(new THREE.Vector3(0, -0.5, 0));
+        }
+
     }
     document.addEventListener( 'mouseleave', onDocumentMouseLeave );
 
